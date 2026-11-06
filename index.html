@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edu-TicTacToe — Belajar Seru, Strategi Jitu! | UAD 2026</title>
+<meta name="description" content="Media pembelajaran interaktif berbasis permainan Tic-Tac-Toe dengan kuis edukasi. Belajar Matematika, IPA, dan PPKn jadi seru!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+<div class="blob blob4"></div>
+
+<!-- ============ NAVBAR GLOBAL ============ -->
+<nav class="global-nav" id="globalNav">
+  <div class="nav-inner">
+    <div class="logo" onclick="goTo('landing')" style="cursor:pointer">
+      <div class="logo-mark">&#127922;</div>
+      <span>Edu-TicTacToe</span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" onclick="scrollToSection('about');return false">Tentang Media</a></li>
+      <li><a href="#" onclick="scrollToSection('rules');return false">Aturan &amp; Strategi</a></li>
+      <li><a href="#" onclick="scrollToSection('leaderboard');return false">&#127942; Leaderboard</a></li>
+      <li><a href="#" class="btn-nav-login" onclick="openLoginModal();return false">&#128274; Login Guru</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Toggle Suara">&#128266;</button>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">&#9776;</button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="scrollToSection('about');toggleMobileMenu();return false">Tentang Media</a>
+    <a href="#" onclick="scrollToSection('rules');toggleMobileMenu();return false">Aturan &amp; Strategi</a>
+    <a href="#" onclick="scrollToSection('leaderboard');toggleMobileMenu();return false">&#127942; Leaderboard</a>
+    <a href="#" onclick="openLoginModal();toggleMobileMenu();return false">&#128274; Login Guru</a>
+  </div>
+</nav>
+
+<!-- ============ PAGE 1: LANDING ============ -->
+<section id="landing" class="page active">
+  <div class="hero">
+    <div class="mascot" id="mascot" title="Klik aku!">&#129417;</div>
+    <div class="eyebrow">&#127891; Media Pembelajaran Interaktif &middot; UAD 2026</div>
+    <h1>Edu-TicTacToe: <span class="highlight">Belajar Seru,</span><br>Strategi Jitu!</h1>
+    <p>Gabungkan keseruan strategi papan klasik dengan tantangan soal Matematika, IPA, dan PPKn. Setiap kotak adalah kesempatan untuk menang sekaligus belajar!</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary btn-lg" id="btnMasukArena" onclick="goTo('setup')">
+        <span>&#127918;</span> Masuk Arena Bermain
+      </button>
+      <button class="btn btn-student btn-lg" id="btnLoginSiswa" onclick="openStudentLoginModal()">
+        <span>&#128100;</span> Login Siswa
+      </button>
+      <button class="btn btn-secondary btn-lg" id="btnLoginGuru" onclick="openLoginModal()">
+        <span>&#128274;</span> Login Ruang Guru
+      </button>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">&#9989; Kurikulum Merdeka</span>
+      <span class="badge">&#129504; Gamifikasi Edukasi</span>
+      <span class="badge">&#9855; Aksesibilitas Suara</span>
+    </div>
+  </div>
+
+  <!-- Feature Strip -->
+  <div class="feature-strip container">
+    <div class="glass feature-card">
+      <div class="feature-icon" style="background:linear-gradient(135deg,#FF6B9D,#FF8FB3)">&#128202;</div>
+      <h4>Analitik Belajar</h4>
+      <p>Grafik perkembangan nilai &amp; materi yang sering salah dijawab siswa.</p>
+    </div>
+    <div class="glass feature-card">
+      <div class="feature-icon" style="background:linear-gradient(135deg,#6C5CE7,#9B8BF0)">&#128229;</div>
+      <h4>Bank Soal Excel</h4>
+      <p>Guru unggah puluhan soal sekaligus lewat file template Excel.</p>
+    </div>
+    <div class="glass feature-card">
+      <div class="feature-icon" style="background:linear-gradient(135deg,#4ECDC4,#6EE7E0)">&#128266;</div>
+      <h4>Text-to-Speech</h4>
+      <p>Soal dibacakan otomatis, ramah anak yang belum lancar membaca.</p>
+    </div>
+    <div class="glass feature-card">
+      <div class="feature-icon" style="background:linear-gradient(135deg,#FFD93D,#FFE87C)">&#128274;</div>
+      <h4>Kunci Kotak Taktis</h4>
+      <p>Salah jawab? Kotak terkunci &amp; giliran lawan untuk merebutnya!</p>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div id="about" class="section container">
+    <div class="section-title">
+      <div class="eyebrow">&#128214; Tentang Media</div>
+      <h2>Mengapa Edu-TicTacToe?</h2>
+      <p>Integrasi metode gamifikasi terbukti meningkatkan minat dan hasil belajar siswa</p>
+    </div>
+    <div class="about-grid">
+      <div class="glass about-card">
+        <div class="about-num">01</div>
+        <h3>Pembelajaran Aktif</h3>
+        <p>Siswa terlibat langsung dalam proses evaluasi belajar melalui permainan yang menyenangkan dan kompetitif namun edukatif.</p>
+      </div>
+      <div class="glass about-card">
+        <div class="about-num">02</div>
+        <h3>Strategi &amp; Kognitif</h3>
+        <p>Memadukan kemampuan berpikir strategis Tic-Tac-Toe dengan penguasaan materi akademik secara bersamaan.</p>
+      </div>
+      <div class="glass about-card">
+        <div class="about-num">03</div>
+        <h3>Inklusif &amp; Aksesibel</h3>
+        <p>Fitur Text-to-Speech membantu siswa yang belum lancar membaca, sehingga semua siswa bisa berpartisipasi.</p>
+      </div>
+      <div class="glass about-card">
+        <div class="about-num">04</div>
+        <h3>Data-Driven Teaching</h3>
+        <p>Dashboard analitik membantu guru mengidentifikasi materi yang perlu diulang berdasarkan data nyata.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rules Section -->
+  <div id="rules" class="section container">
+    <div class="section-title">
+      <div class="eyebrow">&#128220; Aturan &amp; Strategi</div>
+      <h2>Cara Bermain</h2>
+      <p>Panduan langkah demi langkah bermain Edu-TicTacToe</p>
+    </div>
+    <div class="rules-steps">
+      <div class="step-card glass">
+        <div class="step-num">1</div>
+        <div class="step-icon">&#127919;</div>
+        <h4>Klik Kotak</h4>
+        <p>Pilih kotak yang kosong di papan 3x3 untuk memunculkan soal kuis.</p>
+      </div>
+      <div class="step-arrow">&#8594;</div>
+      <div class="step-card glass">
+        <div class="step-num">2</div>
+        <div class="step-icon">&#129504;</div>
+        <h4>Jawab Soal</h4>
+        <p>Diskusikan dan jawab soal pilihan ganda dalam waktu 45 detik!</p>
+      </div>
+      <div class="step-arrow">&#8594;</div>
+      <div class="step-card glass">
+        <div class="step-num">3</div>
+        <div class="step-icon">&#9989;</div>
+        <h4>Kuasai Kotak</h4>
+        <p>Benar = kotak jadi milikmu (+10 poin). Salah = kotak dikunci!</p>
+      </div>
+      <div class="step-arrow">&#8594;</div>
+      <div class="step-card glass">
+        <div class="step-num">4</div>
+        <div class="step-icon">&#127942;</div>
+        <h4>Menangkan!</h4>
+        <p>Susun 3 kotak dalam satu baris/kolom/diagonal = MENANG + 50 poin bonus!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Section -->
+  <div id="leaderboard" class="section container">
+    <div class="section-title">
+      <div class="eyebrow">&#127942; Peringkat Global</div>
+      <h2>Global Leaderboard</h2>
+      <p>Top 7 kelompok dengan skor akumulasi tertinggi minggu ini</p>
+    </div>
+    <div class="glass leaderboard-card">
+      <div class="lb-row rank1">
+        <div class="lb-rank">&#129351;</div>
+        <div class="lb-avatar">&#128049;</div>
+        <div class="lb-info">
+          <div class="lb-name">Kelompok Garuda</div>
+          <div class="lb-wins">12 kemenangan &nbsp;&#183;&nbsp; Akurasi 92%</div>
+        </div>
+        <div class="lb-score">980 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="lb-row rank2">
+        <div class="lb-rank">&#129352;</div>
+        <div class="lb-avatar">&#128640;</div>
+        <div class="lb-info">
+          <div class="lb-name">Kelompok Roket</div>
+          <div class="lb-wins">10 kemenangan &nbsp;&#183;&nbsp; Akurasi 87%</div>
+        </div>
+        <div class="lb-score">910 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:93%"></div></div>
+      </div>
+      <div class="lb-row rank3">
+        <div class="lb-rank">&#129353;</div>
+        <div class="lb-avatar">&#127818;</div>
+        <div class="lb-info">
+          <div class="lb-name">Kelompok Jeruk</div>
+          <div class="lb-wins">9 kemenangan &nbsp;&#183;&nbsp; Akurasi 83%</div>
+        </div>
+        <div class="lb-score">875 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:89%"></div></div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">#4</div>
+        <div class="lb-avatar">&#128054;</div>
+        <div class="lb-info">
+          <div class="lb-name">Kelompok Anjing</div>
+          <div class="lb-wins">8 kemenangan &nbsp;&#183;&nbsp; Akurasi 79%</div>
+        </div>
+        <div class="lb-score">820 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:84%"></div></div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">#5</div>
+        <div class="lb-avatar">&#128760;</div>
+        <div class="lb-info">
+          <div class="lb-name">Kelompok UFO</div>
+          <div class="lb-wins">7 kemenangan &nbsp;&#183;&nbsp; Akurasi 75%</div>
+        </div>
+        <div class="lb-score">790 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:81%"></div></div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">#6</div>
+        <div class="lb-avatar">&#11088;</div>
+        <div class="lb-info">
+          <div class="lb-name">Tim Sandrina</div>
+          <div class="lb-wins">6 kemenangan &nbsp;&#183;&nbsp; Akurasi 80%</div>
+        </div>
+        <div class="lb-score">765 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:78%"></div></div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">#7</div>
+        <div class="lb-avatar">&#127800;</div>
+        <div class="lb-info">
+          <div class="lb-name">Tim Septi</div>
+          <div class="lb-wins">5 kemenangan &nbsp;&#183;&nbsp; Akurasi 77%</div>
+        </div>
+        <div class="lb-score">740 pts</div>
+        <div class="lb-bar"><div class="lb-bar-fill" style="width:76%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="logo">
+        <div class="logo-mark">&#127922;</div>
+        <span>Edu-TicTacToe</span>
+      </div>
+      <p>Dibuat untuk Tugas Akhir Teknologi Multimedia &mdash; Informatika UAD 2026</p>
+    </div>
+  </footer>
+</section>
+
+<!-- ============ PAGE 2: SETUP ============ -->
+<section id="setup" class="page">
+  <div class="page-header container">
+    <button class="btn-back" onclick="goTo('landing')">&larr; Kembali</button>
+    <div class="eyebrow">&#9881; Konfigurasi Permainan</div>
+  </div>
+  <div class="setup-wrap container">
+    <div class="section-title" style="margin-bottom:30px;">
+      <h2>Atur Kamar Bermain</h2>
+      <p>Siapkan tim, materi, dan tampilan sebelum papan dimulai</p>
+    </div>
+
+    <div class="glass setup-card">
+      <h3>&#9312; Pilih Mode Permainan</h3>
+      <div class="mode-grid" id="modeGrid">
+        <div class="mode-option selected" data-mode="ai" onclick="selectMode(this)">
+          <span class="mode-emoji">&#129302;</span>
+          <h4>Siswa vs Komputer</h4>
+          <p>Latihan mandiri melawan AI (Minimax)</p>
+          <div class="mode-badge">Single Player</div>
+        </div>
+        <div class="mode-option" data-mode="pvp" onclick="selectMode(this)">
+          <span class="mode-emoji">&#128101;</span>
+          <h4>Siswa vs Siswa</h4>
+          <p>Mode kelompok, satu perangkat tatap muka</p>
+          <div class="mode-badge">Two Players</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass setup-card">
+      <h3>&#9313; Nama Tim</h3>
+      <div class="input-row">
+        <div class="field">
+          <label for="team1Name">&#128992; Tim 1 (Pemain A)</label>
+          <input type="text" id="team1Name" value="Kelompok Garuda" maxlength="20" placeholder="Nama tim 1...">
+        </div>
+        <div class="field" id="team2Field">
+          <label for="team2Name">&#128994; Tim 2 (Pemain B)</label>
+          <input type="text" id="team2Name" value="Komputer (AI)" maxlength="20" placeholder="Nama tim 2...">
+        </div>
+      </div>
+    </div>
+
+    <div class="glass setup-card">
+      <h3>&#9314; Materi &amp; Tingkat Kesulitan</h3>
+      <div class="input-row">
+        <div class="field">
+          <label for="selectMateri">&#128218; Kategori Materi</label>
+          <select id="selectMateri">
+            <option value="matematika">&#128208; Matematika</option>
+            <option value="ipa">&#128300; IPA</option>
+            <option value="ppkn">&#127963; PPKn</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="selectLevel">&#9889; Tingkat Kesulitan</label>
+          <select id="selectLevel" onchange="updateDifficultyPreview()">
+            <option value="mudah">&#128522; Mudah</option>
+            <option value="sedang" selected>&#129300; Sedang</option>
+            <option value="menantang">&#128293; Menantang</option>
+          </select>
+        </div>
+      </div>
+      <div class="difficulty-preview" id="difficultyPreview">
+        <span class="diff-badge diff-sedang">&#129300; Sedang &mdash; Waktu 45 detik per soal</span>
+      </div>
+    </div>
+
+    <div class="glass setup-card">
+      <h3>&#9315; Kustomisasi Avatar Bidak</h3>
+      <p class="setup-hint">Pilih pasangan ikon untuk Tim 1 vs Tim 2</p>
+      <div class="avatar-pairs" id="avatarPairs">
+        <div class="avatar-pair selected" data-a="&#128049;" data-b="&#128054;" onclick="selectAvatar(this)">
+          <span class="av-emoji">&#128049;</span>
+          <span class="av-vs">VS</span>
+          <span class="av-emoji">&#128054;</span>
+          <span class="av-label">Kucing vs Anjing</span>
+        </div>
+        <div class="avatar-pair" data-a="&#127822;" data-b="&#127818;" onclick="selectAvatar(this)">
+          <span class="av-emoji">&#127822;</span>
+          <span class="av-vs">VS</span>
+          <span class="av-emoji">&#127818;</span>
+          <span class="av-label">Apel vs Jeruk</span>
+        </div>
+        <div class="avatar-pair" data-a="&#128640;" data-b="&#128760;" onclick="selectAvatar(this)">
+          <span class="av-emoji">&#128640;</span>
+          <span class="av-vs">VS</span>
+          <span class="av-emoji">&#128760;</span>
+          <span class="av-label">Roket vs UFO</span>
+        </div>
+        <div class="avatar-pair" data-a="&#11088;" data-b="&#127769;" onclick="selectAvatar(this)">
+          <span class="av-emoji">&#11088;</span>
+          <span class="av-vs">VS</span>
+          <span class="av-emoji">&#127769;</span>
+          <span class="av-label">Bintang vs Bulan</span>
+        </div>
+        <div class="avatar-pair" data-a="&#129409;" data-b="&#128047;" onclick="selectAvatar(this)">
+          <span class="av-emoji">&#129409;</span>
+          <span class="av-vs">VS</span>
+          <span class="av-emoji">&#128047;</span>
+          <span class="av-label">Singa vs Harimau</span>
+        </div>
+        <div class="avatar-pair" data-a="&#9917;" data-b="&#127936;" onclick="selectAvatar(this)">
+          <span class="av-emoji">&#9917;</span>
+          <span class="av-vs">VS</span>
+          <span class="av-emoji">&#127936;</span>
+          <span class="av-label">Bola vs Basket</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-footer">
+      <button class="btn btn-secondary" onclick="goTo('landing')">&larr; Batal</button>
+      <button class="btn btn-primary btn-lg" id="btnStartGame" onclick="startGame()">
+        Mulai Permainan! &#127919;
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 3: ARENA GAME ============ -->
+<section id="arena" class="page">
+  <div class="arena-wrap container">
+    <div class="glass status-bar" id="statusBar">
+      <div class="turn-indicator">
+        <div class="turn-avatar-wrap">
+          <div class="turn-avatar" id="turnAvatar">&#128049;</div>
+          <div class="turn-pulse"></div>
+        </div>
+        <div>
+          <div class="turn-label">GILIRAN SEKARANG</div>
+          <div class="turn-name" id="turnName">Kelompok Garuda</div>
+        </div>
+      </div>
+      <div class="score-pair">
+        <div class="score-team a">
+          <div class="score-avatar" id="scoreAvatarA">&#128049;</div>
+          <div class="score-name" id="scoreNameA">Garuda</div>
+          <div class="score-pts" id="scorePtsA">0</div>
+        </div>
+        <div class="score-vs">VS</div>
+        <div class="score-team b">
+          <div class="score-avatar" id="scoreAvatarB">&#128054;</div>
+          <div class="score-name" id="scoreNameB">Elang</div>
+          <div class="score-pts" id="scorePtsB">0</div>
+        </div>
+      </div>
+      <div class="arena-controls">
+        <button class="ctrl-btn" id="soundToggleArena" onclick="toggleSound()" title="Toggle Suara">&#128266;</button>
+        <button class="ctrl-btn" onclick="confirmQuit()" title="Keluar">&#128682;</button>
+      </div>
+    </div>
+
+    <div class="board-area">
+      <div class="board-container">
+        <div class="glass board" id="gameBoard"></div>
+        <div class="board-label" id="categoryLabel">&#128208; Matematika &middot; Sedang</div>
+      </div>
+      <div class="glass side-panel">
+        <h4>&#128203; Info Papan</h4>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--team-a)"></div>
+            <span id="legendA">Tim &#128049; Garuda</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--team-b)"></div>
+            <span id="legendB">Tim &#128054; Elang</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:rgba(120,120,120,0.35)"></div>
+            <span>Kotak terkunci (salah jawab)</span>
+          </div>
+        </div>
+        <div class="panel-divider"></div>
+        <div class="panel-tip">
+          &#128161; Klik kotak kosong untuk membuka soal kuis. Jawaban benar = kotak terisi avatar + 10 poin!
+        </div>
+        <div class="panel-divider"></div>
+        <div class="move-log">
+          <div class="log-title">&#128221; Log Permainan</div>
+          <div id="moveLogList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div class="modal-overlay" id="quizModal" style="display:none;">
+    <div class="quiz-modal glass">
+      <div class="quiz-header">
+        <div class="quiz-meta" id="quizMeta">&#128208; Matematika &middot; Sedang</div>
+        <button class="tts-btn" id="ttsBtn" onclick="speakQuestion()" title="Bacakan soal">&#128266;</button>
+      </div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(108,92,231,0.15)" stroke-width="4"/>
+            <circle cx="28" cy="28" r="24" fill="none" stroke="var(--purple)" stroke-width="4"
+              stroke-dasharray="150.8" stroke-dashoffset="0" id="timerCircle"
+              stroke-linecap="round" transform="rotate(-90 28 28)"/>
+          </svg>
+          <div class="timer-text" id="timerText">45</div>
+        </div>
+      </div>
+      <div class="quiz-question" id="quizQuestion">Memuat soal...</div>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+  </div>
+
+  <!-- Answer Feedback -->
+  <div class="feedback-overlay" id="feedbackOverlay" style="display:none;">
+    <div class="feedback-card glass">
+      <div class="feedback-icon" id="feedbackIcon">&#9989;</div>
+      <div class="feedback-title" id="feedbackTitle">Jawaban Benar!</div>
+      <div class="feedback-msg" id="feedbackMsg">+10 poin untuk timmu!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 4: GAME OVER ============ -->
+<section id="over" class="page">
+  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:5;width:100%;height:100%"></canvas>
+  <div class="over-wrap container">
+    <div class="trophy-anim" id="trophyAnim">&#127942;</div>
+    <div class="eyebrow" id="overEyebrow">&#127881; PERMAINAN SELESAI</div>
+    <h1 class="over-title">Selamat, <span class="winner-highlight" id="winnerName">Kelompok Garuda</span> Menang!</h1>
+    <p class="over-sub" id="overSub">Garis diagonal berhasil disusun!</p>
+    <div class="stat-grid">
+      <div class="glass stat-card">
+        <div class="stat-icon">&#127885;</div>
+        <div class="stat-val" id="statPoinA">0</div>
+        <div class="stat-lbl" id="statLblA">Poin Garuda</div>
+      </div>
+      <div class="glass stat-card">
+        <div class="stat-icon">&#127919;</div>
+        <div class="stat-val" id="statPoinB">0</div>
+        <div class="stat-lbl" id="statLblB">Poin Elang</div>
+      </div>
+      <div class="glass stat-card">
+        <div class="stat-icon">&#9989;</div>
+        <div class="stat-val" id="statCorrect">0/0</div>
+        <div class="stat-lbl">Soal Benar</div>
+      </div>
+      <div class="glass stat-card">
+        <div class="stat-icon">&#9203;</div>
+        <div class="stat-val" id="statDuration">0:00</div>
+        <div class="stat-lbl">Durasi</div>
+      </div>
+    </div>
+    <div class="glass accuracy-card">
+      <div class="acc-label">Rasio Akurasi Jawaban</div>
+      <div class="acc-bar-bg"><div class="acc-bar-fill" id="accBarFill" style="width:0%"></div></div>
+      <div class="acc-text" id="accText">0% akurasi</div>
+    </div>
+    <div class="over-ctas">
+      <button class="btn btn-primary btn-lg" onclick="restartGame()">&#128260; Main Lagi</button>
+      <button class="btn btn-secondary btn-lg" onclick="goTo('landing')">&#127968; Menu Utama</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 5: TEACHER DASHBOARD ============ -->
+<section id="dashboard" class="page">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="logo" style="margin-bottom:30px;padding:0 8px;cursor:pointer" onclick="goTo('landing')">
+        <div class="logo-mark">&#127922;</div>
+        <span>Edu-TicTacToe</span>
+      </div>
+      <ul class="side-menu">
+        <li><a class="active" data-panel="analytics" href="#" onclick="switchPanel(this,'analytics');return false">&#128202; Ringkasan Analitik</a></li>
+        <li><a data-panel="questions" href="#" onclick="switchPanel(this,'questions');return false">&#128193; Bank Soal</a></li>
+        <li><a data-panel="upload" href="#" onclick="switchPanel(this,'upload');return false">&#128229; Unggah Excel</a></li>
+        <li><a data-panel="students" href="#" onclick="switchPanel(this,'students');return false">&#128101; Data Siswa</a></li>
+        <li><a data-panel="settings" href="#" onclick="switchPanel(this,'settings');return false">&#9881; Pengaturan</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="goTo('landing')">&larr; Keluar Dashboard</button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-head">
+        <div>
+          <h2 id="dashGreeting">Halo, Bu Siti &#128075;</h2>
+          <p class="dash-sub">Pantau dan kelola konten pembelajaran hari ini</p>
+        </div>
+        <div class="dash-head-btns">
+          <button class="btn btn-secondary" style="font-size:13px;padding:10px 16px" onclick="printDashboardPDF()">&#128438; Cetak PDF</button>
+          <button class="btn btn-primary" style="font-size:13px;padding:10px 16px" onclick="openAddQuestionModal()">+ Tambah Soal</button>
+        </div>
+      </div>
+
+      <!-- Analytics Panel -->
+      <div id="panel-analytics" class="dash-panel active">
+        <div class="kpi-grid">
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(255,107,157,0.15)">&#129490;</div><div class="kpi-trend up">&#8593; 12%</div></div>
+            <div class="kpi-val">128</div><div class="kpi-lbl">SISWA AKTIF</div>
+          </div>
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(108,92,231,0.15)">&#128218;</div><div class="kpi-trend up">&#8593; 5%</div></div>
+            <div class="kpi-val" id="kpiTotalSoal">214</div><div class="kpi-lbl">TOTAL SOAL</div>
+          </div>
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(78,205,196,0.18)">&#127919;</div><div class="kpi-trend down">&#8595; 3%</div></div>
+            <div class="kpi-val">76%</div><div class="kpi-lbl">RATA&#178; AKURASI</div>
+          </div>
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(255,217,61,0.25)">&#127918;</div><div class="kpi-trend up">&#8593; 28%</div></div>
+            <div class="kpi-val">342</div><div class="kpi-lbl">SESI DIMAINKAN</div>
+          </div>
+        </div>
+        <div class="dash-grid">
+          <div class="glass chart-card">
+            <div class="chart-head">
+              <h4>&#128201; Materi Paling Sering Salah Dijawab</h4>
+              <select class="chart-filter" onchange="updateBarChart(this.value)">
+                <option value="all">Semua</option>
+                <option value="matematika">Matematika</option>
+                <option value="ipa">IPA</option>
+                <option value="ppkn">PPKn</option>
+              </select>
+            </div>
+            <canvas id="barChart" height="200"></canvas>
+          </div>
+          <div class="glass chart-card">
+            <div class="chart-head"><h4>&#129383; Distribusi Soal per Kategori</h4></div>
+            <canvas id="pieChart" height="200"></canvas>
+          </div>
+        </div>
+        <div class="glass chart-card" style="margin-bottom:24px">
+          <div class="chart-head"><h4>&#128200; Riwayat Skor Rata-rata (6 Sesi Terakhir)</h4></div>
+          <canvas id="lineChart" height="120"></canvas>
+        </div>
+        <div class="glass tbl-card">
+          <div class="tbl-head"><h4>&#127942; Riwayat Skor Tertinggi Siswa</h4></div>
+          <table class="crud-table">
+            <thead><tr><th>Nama Kelompok</th><th>Materi</th><th>Skor</th><th>Akurasi</th><th>Hasil</th><th>Tanggal</th></tr></thead>
+            <tbody>
+              <tr><td>Kelompok Garuda</td><td>Matematika</td><td><span class="tag-pill tag-hard">980 pts</span></td><td>92%</td><td><span class="tag-pill tag-easy">Menang</span></td><td>12 Jul 2026</td></tr>
+              <tr><td>Kelompok Roket</td><td>IPA</td><td><span class="tag-pill tag-med">910 pts</span></td><td>87%</td><td><span class="tag-pill tag-easy">Menang</span></td><td>11 Jul 2026</td></tr>
+              <tr><td>Kelompok Jeruk</td><td>PPKn</td><td><span class="tag-pill tag-med">875 pts</span></td><td>83%</td><td><span class="tag-pill tag-easy">Menang</span></td><td>11 Jul 2026</td></tr>
+              <tr><td>Kelompok Anjing</td><td>Matematika</td><td><span class="tag-pill tag-easy">820 pts</span></td><td>79%</td><td><span class="tag-pill tag-med">Seri</span></td><td>10 Jul 2026</td></tr>
+              <tr><td>Tim Sandrina</td><td>IPA</td><td><span class="tag-pill tag-easy">765 pts</span></td><td>80%</td><td><span class="tag-pill tag-easy">Menang</span></td><td>10 Jul 2026</td></tr>
+              <tr><td>Tim Septi</td><td>PPKn</td><td><span class="tag-pill tag-easy">740 pts</span></td><td>77%</td><td><span class="tag-pill tag-hard">Kalah</span></td><td>9 Jul 2026</td></tr>
+              <tr><td>Kelompok UFO</td><td>Matematika</td><td><span class="tag-pill tag-easy">790 pts</span></td><td>75%</td><td><span class="tag-pill tag-easy">Menang</span></td><td>9 Jul 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Aktivitas Terkini -->
+        <div class="glass tbl-card" style="margin-top:18px">
+          <div class="tbl-head"><h4>&#128337; Aktivitas Terkini (Real-time)</h4></div>
+          <table class="crud-table">
+            <thead><tr><th>Waktu</th><th>Siswa</th><th>Aktivitas</th><th>Hasil</th></tr></thead>
+            <tbody>
+              <tr><td style="font-family:var(--font-mono);font-size:12px">20:18</td><td>Tim Sandrina</td><td>Menjawab soal IPA Sedang</td><td><span class="tag-pill tag-easy">Benar ✅</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px">20:15</td><td>Tim Septi</td><td>Memulai permainan PPKn</td><td><span class="tag-pill tag-med">Aktif ▶</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px">20:10</td><td>Kel. Garuda</td><td>Memenangkan sesi Matematika</td><td><span class="tag-pill tag-easy">Menang 🏆</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px">19:55</td><td>Kel. Roket</td><td>Menjawab soal salah (Pecahan)</td><td><span class="tag-pill tag-hard">Salah ❌</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px">19:48</td><td>Kel. Jeruk</td><td>Menyelesaikan sesi PPKn</td><td><span class="tag-pill tag-med">Seri 🤝</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bank Soal Panel -->
+      <div id="panel-questions" class="dash-panel">
+        <div class="dash-subhead">
+          <h3>&#128193; Manajemen Bank Soal</h3>
+          <div class="filter-row">
+            <select id="filterMateri" onchange="filterQuestions()">
+              <option value="">Semua Materi</option>
+              <option value="Matematika">Matematika</option>
+              <option value="IPA">IPA</option>
+              <option value="PPKn">PPKn</option>
+            </select>
+            <select id="filterLevel" onchange="filterQuestions()">
+              <option value="">Semua Kesulitan</option>
+              <option value="Mudah">Mudah</option>
+              <option value="Sedang">Sedang</option>
+              <option value="Menantang">Menantang</option>
+            </select>
+            <button class="btn btn-primary" style="font-size:13px;padding:10px 16px" onclick="openAddQuestionModal()">+ Tambah Soal</button>
+          </div>
+        </div>
+        <div class="glass tbl-card">
+          <table class="crud-table" id="questionTable">
+            <thead><tr><th>#</th><th>Pertanyaan</th><th>Kategori</th><th>Kesulitan</th><th>Aksi</th></tr></thead>
+            <tbody id="questionTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Upload Panel -->
+      <div id="panel-upload" class="dash-panel">
+        <div class="dash-subhead"><h3>&#128229; Unggah Soal Massal via Excel</h3></div>
+        <div class="glass upload-zone" id="uploadZone"
+          ondragover="event.preventDefault();this.classList.add('drag-active')"
+          ondragleave="this.classList.remove('drag-active')"
+          ondrop="handleFileDrop(event)">
+          <div class="upload-icon">&#128193;</div>
+          <h4>Drag &amp; Drop File Excel di Sini</h4>
+          <p>Atau klik tombol di bawah untuk memilih file .xlsx</p>
+          <p class="upload-hint">Format: A=Pertanyaan, B=Opsi A, C=Opsi B, D=Opsi C, E=Opsi D, F=Kunci, G=Kategori, H=Kesulitan</p>
+          <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileSelect(event)">
+          <button class="btn btn-primary" onclick="document.getElementById('excelInput').click()">&#128196; Pilih File Excel</button>
+        </div>
+        <div class="glass upload-preview" id="uploadPreview" style="display:none">
+          <div class="upload-status" id="uploadStatus"></div>
+          <div class="upload-progress-bar"><div class="upload-progress-fill" id="uploadProgressFill" style="width:0%"></div></div>
+          <p id="uploadMsg" style="font-size:13px;color:var(--ink-soft);margin-top:10px;text-align:center;"></p>
+        </div>
+        <div class="glass info-card" style="padding:24px;margin-top:20px;">
+          <h4>&#128203; Panduan Template Excel</h4>
+          <table class="crud-table" style="margin-top:12px;">
+            <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>Pertanyaan</td><td>Berapakah luas persegi panjang 12x8 m?</td></tr>
+              <tr><td>B-E</td><td>Opsi A, B, C, D</td><td>96 m², 40 m², 20 m², 88 m²</td></tr>
+              <tr><td>F</td><td>Jawaban (A/B/C/D)</td><td>A</td></tr>
+              <tr><td>G</td><td>Kategori</td><td>Matematika</td></tr>
+              <tr><td>H</td><td>Kesulitan</td><td>Sedang</td></tr>
+            </tbody>
+          </table>
+          <button class="btn btn-secondary" style="margin-top:16px;font-size:13px" onclick="downloadTemplate()">&#128229; Unduh Template CSV</button>
+        </div>
+      </div>
+
+      <!-- Data Siswa Panel -->
+      <div id="panel-students" class="dash-panel">
+        <div class="dash-subhead">
+          <h3>&#128101; Data Siswa &amp; Kelompok</h3>
+          <div class="filter-row">
+            <select onchange="filterStudentTable(this.value)">
+              <option value="all">Semua</option>
+              <option value="aktif">Aktif</option>
+              <option value="tidak">Tidak Aktif</option>
+            </select>
+            <button class="btn btn-primary" style="font-size:13px;padding:9px 16px" onclick="showToast('Fitur ekspor data siswa!')">&#128228; Ekspor CSV</button>
+          </div>
+        </div>
+        <!-- Student KPI -->
+        <div class="kpi-grid" style="margin-bottom:18px">
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(108,92,231,0.15)">&#128101;</div><div class="kpi-trend up">&#8593; 3</div></div>
+            <div class="kpi-val">7</div><div class="kpi-lbl">TOTAL KELOMPOK</div>
+          </div>
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(52,199,89,0.15)">&#9989;</div><div class="kpi-trend up">&#8593; 12%</div></div>
+            <div class="kpi-val">128</div><div class="kpi-lbl">SISWA AKTIF</div>
+          </div>
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(255,217,61,0.20)">&#127919;</div><div class="kpi-trend up">&#8593; 5%</div></div>
+            <div class="kpi-val">76%</div><div class="kpi-lbl">RATA&#178; AKURASI</div>
+          </div>
+          <div class="glass kpi-card">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(255,107,157,0.15)">&#127942;</div><div class="kpi-trend up">&#8593; 28%</div></div>
+            <div class="kpi-val">342</div><div class="kpi-lbl">TOTAL SESI</div>
+          </div>
+        </div>
+        <div class="glass tbl-card">
+          <table class="crud-table" id="studentTable">
+            <thead><tr><th>#</th><th>Nama Tim/Kelompok</th><th>Anggota</th><th>Sesi</th><th>Skor Terbaik</th><th>Akurasi</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>&#128049; Kelompok Garuda</td><td>Andi, Budi, Caca</td><td>15</td><td>980 pts</td><td><span class="tag-pill tag-hard">92%</span></td><td><span class="tag-pill tag-easy">Aktif</span></td></tr>
+              <tr><td>2</td><td>&#128640; Kelompok Roket</td><td>Dita, Eka, Fauzi</td><td>12</td><td>910 pts</td><td><span class="tag-pill tag-med">87%</span></td><td><span class="tag-pill tag-easy">Aktif</span></td></tr>
+              <tr><td>3</td><td>&#127818; Kelompok Jeruk</td><td>Gina, Hasan, Indah</td><td>10</td><td>875 pts</td><td><span class="tag-pill tag-med">83%</span></td><td><span class="tag-pill tag-easy">Aktif</span></td></tr>
+              <tr><td>4</td><td>&#128054; Kelompok Anjing</td><td>Joko, Kiki, Lena</td><td>9</td><td>820 pts</td><td><span class="tag-pill tag-easy">79%</span></td><td><span class="tag-pill tag-easy">Aktif</span></td></tr>
+              <tr><td>5</td><td>&#128760; Kelompok UFO</td><td>Mika, Nana, Omar</td><td>8</td><td>790 pts</td><td><span class="tag-pill tag-easy">75%</span></td><td><span class="tag-pill tag-med">Cuti</span></td></tr>
+              <tr><td>6</td><td>&#11088; Tim Sandrina</td><td>Sandrina</td><td>7</td><td>765 pts</td><td><span class="tag-pill tag-med">80%</span></td><td><span class="tag-pill tag-easy">Aktif</span></td></tr>
+              <tr><td>7</td><td>&#127800; Tim Septi</td><td>Septi</td><td>6</td><td>740 pts</td><td><span class="tag-pill tag-easy">77%</span></td><td><span class="tag-pill tag-easy">Aktif</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Perkembangan per siswa -->
+        <div class="glass chart-card" style="margin-top:18px">
+          <div class="chart-head"><h4>&#128200; Perkembangan Skor Tim Sandrina &amp; Tim Septi</h4></div>
+          <canvas id="studentLineChart" height="120"></canvas>
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div id="panel-settings" class="dash-panel">
+        <div class="dash-subhead"><h3>&#9881; Pengaturan Sistem</h3></div>
+        <div class="glass setup-card">
+          <h4 style="margin-bottom:16px">&#128100; Profil Guru</h4>
+          <div class="input-row">
+            <div class="field"><label>Nama Guru</label><input type="text" value="Siti Nurhaliza, S.Pd."></div>
+            <div class="field"><label>Mata Pelajaran</label><input type="text" value="Matematika, IPA, PPKn"></div>
+          </div>
+          <div class="input-row" style="margin-top:14px">
+            <div class="field"><label>Sekolah</label><input type="text" value="SDN 1 Yogyakarta"></div>
+            <div class="field"><label>Kelas</label><input type="text" value="4A, 4B, 5A"></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:18px;font-size:13px;padding:10px 20px" onclick="showToast('Profil berhasil disimpan!')">&#128190; Simpan Profil</button>
+        </div>
+        <div class="glass setup-card">
+          <h4 style="margin-bottom:16px">&#127918; Pengaturan Permainan Default</h4>
+          <div class="input-row">
+            <div class="field"><label>Waktu per Soal (detik)</label><select><option>30</option><option selected>45</option><option>60</option><option>90</option></select></div>
+            <div class="field"><label>Poin per Jawaban Benar</label><select><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:18px;font-size:13px;padding:10px 20px" onclick="showToast('Pengaturan berhasil disimpan!')">&#128190; Simpan Pengaturan</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- ============ PAGE 6: STUDENT DASHBOARD ============ -->
+<section id="student-dashboard" class="page">
+  <nav class="global-nav" style="position:relative;top:0">
+    <div class="nav-inner">
+      <div class="logo" onclick="goTo('landing')" style="cursor:pointer">
+        <div class="logo-mark">&#127922;</div>
+        <span>Edu-TicTacToe</span>
+      </div>
+      <span id="studentNavName" style="font-family:var(--font-display);font-weight:700;color:var(--ink-soft);font-size:14px">&#128100; Halo, Siswa!</span>
+      <div class="nav-right">
+        <button class="btn btn-primary" style="font-size:13px;padding:9px 18px" onclick="goTo('setup')">&#127918; Main Sekarang</button>
+        <button class="btn-back" onclick="goTo('landing')">Keluar</button>
+      </div>
+    </div>
+  </nav>
+  <div class="container" style="padding-top:28px;padding-bottom:60px">
+    <!-- Welcome Banner -->
+    <div class="glass" style="padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="font-size:60px" id="studentDashAvatar">&#11088;</div>
+      <div style="flex:1">
+        <div class="eyebrow">&#128100; Dashboard Siswa</div>
+        <h2 id="studentDashName" style="margin-bottom:6px">Tim Sandrina</h2>
+        <p style="color:var(--ink-soft);font-weight:600;font-size:14px">Terus semangat belajar dan bermain! Setiap soal yang kamu jawab benar adalah satu langkah menuju juara! &#127942;</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="goTo('setup')">&#127918; Main Sekarang</button>
+        <button class="btn btn-secondary" onclick="printStudentPDF()">&#128438; Cetak Riwayat PDF</button>
+      </div>
+    </div>
+    <!-- KPI Stats -->
+    <div class="kpi-grid" style="margin-bottom:22px">
+      <div class="glass kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:rgba(108,92,231,0.15)">&#127918;</div></div>
+        <div class="kpi-val" id="sdStatGames">7</div><div class="kpi-lbl">TOTAL SESI</div>
+      </div>
+      <div class="glass kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:rgba(52,199,89,0.15)">&#127942;</div><div class="kpi-trend up">&#8593; 83%</div></div>
+        <div class="kpi-val" id="sdStatWins">5</div><div class="kpi-lbl">KEMENANGAN</div>
+      </div>
+      <div class="glass kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:rgba(255,217,61,0.25)">&#11088;</div></div>
+        <div class="kpi-val" id="sdStatBest">765</div><div class="kpi-lbl">SKOR TERBAIK</div>
+      </div>
+      <div class="glass kpi-card">
+        <div class="kpi-top"><div class="kpi-icon" style="background:rgba(78,205,196,0.18)">&#127919;</div></div>
+        <div class="kpi-val" id="sdStatAcc">80%</div><div class="kpi-lbl">RATA&#178; AKURASI</div>
+      </div>
+    </div>
+    <!-- Charts Row -->
+    <div class="dash-grid" style="margin-bottom:22px">
+      <div class="glass chart-card">
+        <div class="chart-head"><h4>&#128200; Perkembangan Skor per Sesi</h4></div>
+        <canvas id="sdLineChart" height="180"></canvas>
+      </div>
+      <div class="glass chart-card">
+        <div class="chart-head"><h4>&#129383; Akurasi per Kategori Materi</h4></div>
+        <canvas id="sdPieChart" height="180"></canvas>
+      </div>
+    </div>
+    <!-- Accuracy Bar -->
+    <div class="glass" style="padding:22px 26px;margin-bottom:22px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <h4>&#127919; Kemajuan Materi</h4>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px">
+          <span>&#128208; Matematika</span><span id="sdMathPct">82%</span>
+        </div>
+        <div style="height:10px;border-radius:10px;background:rgba(108,92,231,0.12);overflow:hidden">
+          <div id="sdMathBar" style="height:100%;width:82%;background:linear-gradient(90deg,#6C5CE7,#FF6B9D);border-radius:10px;transition:width 1s"></div>
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px">
+          <span>&#128300; IPA</span><span id="sdIpaPct">78%</span>
+        </div>
+        <div style="height:10px;border-radius:10px;background:rgba(108,92,231,0.12);overflow:hidden">
+          <div id="sdIpaBar" style="height:100%;width:78%;background:linear-gradient(90deg,#4ECDC4,#34C759);border-radius:10px;transition:width 1s"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px">
+          <span>&#127963; PPKn</span><span id="sdPpknPct">85%</span>
+        </div>
+        <div style="height:10px;border-radius:10px;background:rgba(108,92,231,0.12);overflow:hidden">
+          <div id="sdPpknBar" style="height:100%;width:85%;background:linear-gradient(90deg,#FFD93D,#FF8A65);border-radius:10px;transition:width 1s"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Game History Table -->
+    <div class="glass tbl-card">
+      <div class="tbl-head">
+        <h4>&#128196; Riwayat Permainan</h4>
+        <button class="btn btn-secondary" style="font-size:12px;padding:8px 14px" onclick="printStudentPDF()">&#128438; Cetak PDF</button>
+      </div>
+      <table class="crud-table">
+        <thead><tr><th>#</th><th>Tanggal</th><th>Materi</th><th>Level</th><th>Lawan</th><th>Soal Benar</th><th>Skor</th><th>Hasil</th></tr></thead>
+        <tbody id="studentHistoryBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL: LOGIN GURU -->
+<div class="modal-overlay" id="loginModal" style="display:none;">
+  <div class="login-modal glass">
+    <button class="modal-close" onclick="closeLoginModal()">&#10005;</button>
+    <div class="login-icon">&#128274;</div>
+    <h3>Login Ruang Guru</h3>
+    <p class="login-sub">Akses panel manajemen &amp; analitik eksklusif untuk guru</p>
+    <div class="field">
+      <label for="loginUsername">Username</label>
+      <input type="text" id="loginUsername" placeholder="Masukkan username..." value="guru">
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Masukkan password..." value="1234">
+    </div>
+    <div class="login-hint">&#128161; Demo: username = <b>guru</b>, password = <b>1234</b></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:18px" onclick="doLogin()">&#128275; Masuk Dashboard</button>
+    <div class="login-error" id="loginError" style="display:none">&#10060; Username atau password salah!</div>
+  </div>
+</div>
+
+<!-- MODAL: TAMBAH SOAL -->
+<div class="modal-overlay" id="addQuestionModal" style="display:none;">
+  <div class="quiz-modal glass" style="max-width:640px">
+    <button class="modal-close" onclick="closeAddQuestionModal()">&#10005;</button>
+    <h3 style="font-family:var(--font-display);margin-bottom:20px" id="aqModalTitle">&#10133; Tambah Soal Baru</h3>
+    <div class="field">
+      <label>Pertanyaan</label>
+      <textarea id="aqQuestion" rows="3" style="width:100%;padding:12px 16px;border-radius:14px;border:2px solid rgba(108,92,231,0.18);font-family:var(--font-body);font-size:14px;resize:vertical;background:rgba(255,255,255,0.7);color:var(--ink)" placeholder="Tulis pertanyaan di sini..."></textarea>
+    </div>
+    <div class="input-row" style="margin-top:12px">
+      <div class="field"><label>Opsi A</label><input type="text" id="aqA" placeholder="Opsi A..."></div>
+      <div class="field"><label>Opsi B</label><input type="text" id="aqB" placeholder="Opsi B..."></div>
+    </div>
+    <div class="input-row" style="margin-top:12px">
+      <div class="field"><label>Opsi C</label><input type="text" id="aqC" placeholder="Opsi C..."></div>
+      <div class="field"><label>Opsi D</label><input type="text" id="aqD" placeholder="Opsi D..."></div>
+    </div>
+    <div class="input-row" style="margin-top:12px">
+      <div class="field"><label>Jawaban Benar</label><select id="aqAnswer"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+      <div class="field"><label>Kategori</label><select id="aqCategory"><option>Matematika</option><option>IPA</option><option>PPKn</option></select></div>
+      <div class="field"><label>Kesulitan</label><select id="aqDifficulty"><option>Mudah</option><option selected>Sedang</option><option>Menantang</option></select></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+      <button class="btn btn-secondary" onclick="closeAddQuestionModal()">Batal</button>
+      <button class="btn btn-primary" onclick="saveQuestion()">&#128190; Simpan Soal</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: QUIT -->
+<div class="modal-overlay" id="quitModal" style="display:none;">
+  <div class="glass" style="padding:34px;border-radius:24px;max-width:400px;text-align:center">
+    <div style="font-size:50px;margin-bottom:12px">&#128682;</div>
+    <h3 style="font-family:var(--font-display);margin-bottom:10px">Keluar Permainan?</h3>
+    <p style="color:var(--ink-soft);font-size:14px;margin-bottom:22px">Progress permainan tidak akan disimpan. Yakin ingin keluar?</p>
+    <div style="display:flex;gap:12px;justify-content:center">
+      <button class="btn btn-secondary" onclick="document.getElementById('quitModal').style.display='none'">Lanjut Main</button>
+      <button class="btn btn-primary" onclick="goTo('landing');document.getElementById('quitModal').style.display='none'">Ya, Keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LOGIN SISWA -->
+<div class="modal-overlay" id="studentLoginModal" style="display:none;">
+  <div class="login-modal glass">
+    <button class="modal-close" onclick="closeStudentLoginModal()">&#10005;</button>
+    <div class="login-icon">&#128100;</div>
+    <h3>Login Siswa</h3>
+    <p class="login-sub">Masuk untuk melihat riwayat &amp; dashboard pribadimu</p>
+    <div class="field">
+      <label for="studentLoginUser">Username Siswa</label>
+      <input type="text" id="studentLoginUser" placeholder="Masukkan username..." value="sandrina">
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="studentLoginPass">Password</label>
+      <input type="password" id="studentLoginPass" placeholder="Masukkan password..." value="sandrina123">
+    </div>
+    <div class="login-hint">&#128161; Demo akun: <b>sandrina</b> / <b>sandrina123</b> &nbsp;atau&nbsp; <b>septi</b> / <b>septi123</b></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:18px;background:linear-gradient(135deg,#6C5CE7,#FF6B9D)" onclick="doStudentLogin()">&#128275; Masuk Dashboard Siswa</button>
+    <div class="login-error" id="studentLoginError" style="display:none">&#10060; Username atau password salah!</div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
